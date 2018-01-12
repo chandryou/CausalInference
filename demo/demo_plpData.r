@@ -137,6 +137,7 @@ covariates <- limitCovariatesToPopulation(covariates, ff::as.ff(popAC$rowId))
 covariates<-data.frame(covariates)
 
 covariateref.df<-data.frame(plpAC$covariateRef)
+saveRDS(covariateref.df,file.path(dataFolder,"covariateref.rds"))
 subject_id_factor<-as.factor(unique(covariates$rowId))
 covariate_id_factor<-as.factor(unique(covariates$covariateId))
 
@@ -151,7 +152,7 @@ saveRDS(covACsparse,file.path(dataFolder,"covACsparse.rds"))
 covAC<-as.data.frame(as.matrix(covACsparse))
 
 covAC$outcome<-as.logical(popAC$outcomeCount[as.integer(subject_id_factor)])
-covAC$treatment <- FALSE
+covAC$treatment <- TRUE
 
 saveRDS(covAC,file.path(dataFolder,"covAC.rds"))
 
@@ -220,3 +221,6 @@ covAD<-covAD[,match(colnames(covAC),colnames(covAD))]
 
 cov.df<-rbind(covAC,covAD)
 saveRDS(cov.df,file.path(dataFolder,"cov_df.rds"))
+
+
+sum(cov.df$treatment==FALSE)
